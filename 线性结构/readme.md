@@ -76,7 +76,7 @@ front和rear指针的移动通过加1取余法实现。
 
 主要思路： 相同指数的项的系数相加，其余部分copy
 
-使用数组实现多项式相加。[JS代码实现]("../code/polynomialAdd.js")
+使用数组实现多项式相加。[JS代码实现](https://github.com/OwenLittleWhite/fword-data-structures/blob/master/code/polynomialAdd.js)
 
 
 
