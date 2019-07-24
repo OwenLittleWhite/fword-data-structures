@@ -78,6 +78,43 @@ front和rear指针的移动通过加1取余法实现。
 
 使用数组实现多项式相加。[JS代码实现](https://github.com/OwenLittleWhite/fword-data-structures/blob/master/code/polynomialAdd.js)
 
+## 多项式相乘
+
+已知两个多项式：
+
+```
+(1) 3x^4 - 5x^2 + 6x - 2
+(2) 5x^20 - 7x^4 + 3x
+```
+
+多项式的乘积为：
+
+```
+(a+b)(c+d) = ac + ad + bc + bd
+```
+
+即每一项相乘然后相加
+
+涉及到合并同类项
+
+上述多项式的乘积：
+
+```
+15x^24 - 25x^22 + 30x^21 - 10x^20 - 21x^8 + 35x^6 - 33x^5 + 14x^4 - 15x^3 + 18x^2 - 6x
+```
+
+解题思路：
+
+1. 多项式的表示：按照加法的那种格式表示，采用数组表示，并且按照多项式的指数进行排序
+2. 每一项相乘系数相乘，指数相加
+3. 两种方式进行计算:
+   1. 将乘法运算转化为加法运算，即使用P1的每一项乘P2多项式，然后加到结果多项式里面
+   2. 逐项插入，将P1的当前项乘P2的当前项，然后将结果插入至结果多项式中，关键在于要插入正确的位置。
+   
+[多项式乘法的JS代码实现](https://github.com/OwenLittleWhite/fword-data-structures/blob/master/code/polynomialMult.js)
+
+
+
 
 
 

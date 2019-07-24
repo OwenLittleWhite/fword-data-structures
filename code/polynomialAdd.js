@@ -4,7 +4,7 @@
 // P1 = 4x^5 + 6x^3 + 8
 let P1 = [{ coef: 4, expon: 5 }, { coef: 6, expon: 3 }, { coef: 8, expon: 0 }];
 // P2 = 4x^6 + 2x^3 + 7x
-let P2 = [{ coef: 4, expon: 6 }, { coef: 2, expon: 3 }, { coef: 7, expon: 1 }];
+let P2 = [{ coef: 4, expon: 6 }, { coef: -2, expon: 3 }, { coef: 7, expon: 1 }];
 
 function polynomialAdd(P1, P2) {
   let p1Index = 0;
@@ -21,10 +21,14 @@ function polynomialAdd(P1, P2) {
         p2Index++;
         break;
       case 0:
-        sum.push({
-          coef: P1[p1Index].coef + P2[p2Index].coef,
-          expon: P1[p1Index].expon
-        });
+        // 过滤掉系数为0的
+        let coef = P1[p1Index].coef + P2[p2Index].coef
+        if (coef !== 0 ) {
+          sum.push({
+            coef: coef,
+            expon: P1[p1Index].expon
+          });
+        }     
         p1Index++;
         p2Index++;
         break;
@@ -51,3 +55,7 @@ function compare(p1, p2) {
 let sum = polynomialAdd(P1, P2);
 console.log(sum);
 //[ { coef: 4, expon: 6 },{ coef: 4, expon: 5 },{ coef: 8, expon: 3 },{ coef: 7, expon: 1 },{ coef: 8, expon: 0 } ]
+
+module.exports = {
+  polynomialAdd
+};
