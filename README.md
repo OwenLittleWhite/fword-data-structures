@@ -5,3 +5,4 @@
 现在立此项目，来记录学习数据结构和算法的过程和笔记。
 
 1. [线性结构](https://github.com/OwenLittleWhite/fword-data-structures/tree/master/%E7%BA%BF%E6%80%A7%E7%BB%93%E6%9E%84)
+2. [树](https://github.com/OwenLittleWhite/fword-data-structures/tree/master/%E6%A0%91)
