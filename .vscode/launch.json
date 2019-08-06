@@ -8,7 +8,7 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
-            "program": "${workspaceFolder}\\code\\polynomialMult.js"
+            "program": "${workspaceFolder}\\src\\tree\\BinaryTree.js"
         }
     ]
 }

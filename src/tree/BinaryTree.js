@@ -140,7 +140,7 @@ months.forEach((month) => {
 
 const min = findMin(tree)
 const max = findMax(tree)
-// console.log(min, max)
-
-// remove('Jan', tree)
+console.log(min, max)
+console.log(find('Jan', tree))
+remove('Jan', tree)
 console.log(iterFind('Jan', tree))

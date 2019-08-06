@@ -150,4 +150,4 @@ n个结点父子关系
 4. insert(x, tree) 树中插入元素
 5. delete(x, tree) 树中删除元素
 
-
+这几个函数的[JavaScript实现](https://github.com/OwenLittleWhite/fword-data-structures/blob/master/src/tree/BinaryTree.js)
