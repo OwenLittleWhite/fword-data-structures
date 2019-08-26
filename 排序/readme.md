@@ -10,7 +10,7 @@
 
 ### 冒泡排序
 
-![冒泡](https://github.com/OwenLittleWhite/fword-data-structures/tree/master/asserts/bubble.png)
+![冒泡](https://github.com/OwenLittleWhite/fword-data-structures/blob/master/asserts/bubble.png)
 
 每一趟将最大的泡泡排在最后，然后再将第二大的泡泡排在倒数第二个位置，依次类推，当一趟没有任何交换时程序可以break出来
 
@@ -48,7 +48,7 @@ function bubbleSort(arr) {
 
 插入排序类似于打牌时抓牌的操作
 
-![插入](https://github.com/OwenLittleWhite/fword-data-structures/tree/master/asserts/insert.png)
+![插入](https://github.com/OwenLittleWhite/fword-data-structures/blob/master/asserts/insert.png)
 
 默认先拿到了第一张牌，再去拿接下来的牌，和手中的牌从右边开始比较，选择插入的位置
 
