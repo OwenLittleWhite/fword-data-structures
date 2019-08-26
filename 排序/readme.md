@@ -247,29 +247,29 @@ function sedgewickShellSort(arr) {
 ``` C
 void Selection_Sort ( ElementType A[], int N )
 { for ( i = 0; i < N; i ++ ) {
-MinPosition = ScanForMin( A, i, N–1 );
-/* 从A[i]到A[N–1]中找最小元，并将其位置赋给MinPosition */
-Swap( A[i], A[MinPosition] );
-/* 将未排序部分的最小元换到有序部分的最后位置 */
-}
+    MinPosition = ScanForMin( A, i, N–1 );
+    /* 从A[i]到A[N–1]中找最小元，并将其位置赋给MinPosition */
+    Swap( A[i], A[MinPosition] );
+   /* 将未排序部分的最小元换到有序部分的最后位置 */
+  }
 }
 ```
 
-时间复杂度有关的就是怎么找到最小元
+此排序方法的时间复杂度有关的就是怎么快速找到最小元
 
-可以利用最小堆和来快速找到最小元
+可以利用最小堆来快速找到最小元
 
-第一种算法就是，将数组的元素构建一个堆，然后从堆中删除最小的元素，T ( N ) = O ( N log N )
+第一种算法就是，将数组的元素构建一个堆，然后从堆中删除最小的元素，时间复杂度 T ( N ) = O ( N log N )
 
 伪码描述：
 
 ``` C
 void Heap_Sort ( ElementType A[], int N )
 { BuildHeap(A); /* O(N) */
-for ( i=0; i<N; i++ )
-TmpA[i] = DeleteMin(A); /* O(logN) */
-for ( i=0; i<N; i++ ) /* O(N) */
-A[i] = TmpA[i];
+  for ( i=0; i<N; i++ )
+    TmpA[i] = DeleteMin(A); /* O(logN) */
+  for ( i=0; i<N; i++ ) /* O(N) */
+    A[i] = TmpA[i];
 }
 ```
 
