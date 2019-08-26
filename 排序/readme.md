@@ -183,11 +183,148 @@ function hibbardShellSort(arr) {
 
 {1, 5, 19, 41, 109, … } 
  
-9*4^i – 9*2^i + 1 或 4^i – 3*2^i + 1
+9\*4^i – 9\*2^i + 1 或 4^i – 3*2^i + 1
 
 猜想：Tavg = O ( N^(7/6) )，Tworst = O ( N^(4/3) )
+
+``` JS
+/**
+ * Sedgewick增量的希尔排序
+ * @param {Array<Number>} arr 
+ */
+function sedgewickShellSort(arr) {
+    let len = arr.length;
+    if (len <= 0) {
+        return
+    }
+    let d;
+    // 生成增量序列
+    let dArray = [];
+    let index = 0;
+    let exit = false;
+    // 9*4^i – 9*2^i + 1 或 4^i – 3*2^i + 1
+    while (!exit) {
+        let result1 = 9 * (4 ** index) - 9 * (2 ** index) + 1;
+        let result2 = 4 ** index - 3 * (2 ** index) + 1;
+        if (result1 > 0) {
+            if (result1 > len) {
+                exit = true;
+            } else {
+                dArray.push(result1);
+            }
+        } else if (result2 > 0) {
+            if (result2 > len) {
+                exit = true;
+            } else {
+                dArray.push(result2);
+            }
+        }
+        index++;
+    }
+    for (k = dArray.length - 1; k >= 0; k--) {
+        d = dArray[k];
+        for (let i = d; i < len; i++) {
+            let temp = arr[i]; /* 摸下一张牌 */
+            let j;
+            for (j = i; j >= d && arr[j - d] > temp; j -= d) {
+                arr[j] = arr[j - d] // 移出空位 
+            }
+            arr[j] = temp
+        }
+    }
+}
+```
 
 ---
 
 希尔排序是不稳定的算法
 
+## 堆排序
+
+选择排序的伪码描述
+
+``` C
+void Selection_Sort ( ElementType A[], int N )
+{ for ( i = 0; i < N; i ++ ) {
+MinPosition = ScanForMin( A, i, N–1 );
+/* 从A[i]到A[N–1]中找最小元，并将其位置赋给MinPosition */
+Swap( A[i], A[MinPosition] );
+/* 将未排序部分的最小元换到有序部分的最后位置 */
+}
+}
+```
+
+时间复杂度有关的就是怎么找到最小元
+
+可以利用最小堆和来快速找到最小元
+
+第一种算法就是，将数组的元素构建一个堆，然后从堆中删除最小的元素，T ( N ) = O ( N log N )
+
+伪码描述：
+
+``` C
+void Heap_Sort ( ElementType A[], int N )
+{ BuildHeap(A); /* O(N) */
+for ( i=0; i<N; i++ )
+TmpA[i] = DeleteMin(A); /* O(logN) */
+for ( i=0; i<N; i++ ) /* O(N) */
+A[i] = TmpA[i];
+}
+```
+
+缺点：需要额外O(N)空间，并且复制元素需要时间。
+
+另外一种算法：构建成最大堆，然后将堆顶的元素和最后一个元素交换，然后堆删除最后一个元素，再调整成最大堆。
+
+JS完整代码
+
+``` JS
+/**
+ * 堆排序
+ * @param {Array<Number>} arr
+ */
+function heapSort(arr) {
+    let len = arr.length;
+    // 建立最大堆
+    // 从最后一个结点的父节点开始调整成最大堆
+    for (let i = Math.floor(len / 2) - 1; i >= 0; i--) {
+        percDown(arr, i, len)
+    }
+    for (let j = len - 1; j > 0; j--) {
+        /* 将堆顶的元素放到最后 */
+        let temp = arr[0];
+        arr[0] = arr[j];
+        arr[j] = temp;
+        /** 再次调整成最大堆 */
+        percDown(arr, 0, j);
+    }
+}
+
+function percDown(arr, p, len) {
+    /* 将len个元素的数组中以arr[p]为根的子堆调整为最大堆 */
+    let parent, child;
+    let x;
+    x = arr[p]; /* 取出根结点存放的值 */
+    for (parent = p;
+        (parent * 2 + 1) < len; parent = child) {
+        child = parent * 2 + 1; // 左儿子下标
+        if ((child != len - 1) && (arr[child] < arr[child + 1])) {
+            child++; /* Child指向左右子结点的较大者 */
+        }
+        if (x >= arr[child]) /* 找到了合适位置 */ {
+            break;
+        } else /* 下滤X */ {
+            arr[parent] = arr[child];
+        }
+    }
+    arr[parent] = x;
+}
+```
+
+定理：堆排序处理N个不同元素的
+随机排列的平均比较次数是
+2N logN - O(Nlog logN) 。
+
+虽然堆排序给出最佳平均时间复
+杂度，但实际效果不如用
+Sedgewick增量序列的希尔排序。
