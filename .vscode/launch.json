@@ -8,7 +8,7 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
-            "program": "${workspaceFolder}\\src\\tree\\BinaryTree.js"
+            "program": "${workspaceFolder}\\src\\sort.js"
         }
     ]
 }

@@ -6,6 +6,9 @@
 
 没有一种排序是任何情况下都表现最好的
 
+* [简单排序](#简单排序)
+* [希尔排序](#希尔排序)
+
 ## 简单排序
 
 ### 冒泡排序
@@ -44,7 +47,7 @@ function bubbleSort(arr) {
 
 稳定
 
-## 插入排序
+### 插入排序
 
 插入排序类似于打牌时抓牌的操作
 
@@ -79,7 +82,7 @@ function insertSort(arr) {
 
 ### 时间复杂度下限
 
-对于下标i<j，如果A[i]>A[j]，则称(i,j)是
+对于下标i<j，如果A[i]>A[j]，则称(i, j)是
 一对逆序对(inversion)
 
 交换2个相邻元素正好消去1个逆序对！
@@ -93,5 +96,98 @@ N ( N  1 ) / 4 个逆序对。
 法，其平均时间复杂度为  ( N2 ) 。
 
 这意味着：要提高算法效率，我们必须
-- 每次消去不止1个逆序对！
-- 每次交换相隔较远的2个元素！
+
+* 每次消去不止1个逆序对！
+* 每次交换相隔较远的2个元素！
+
+## 希尔排序
+
+对一个序列排序，先进行一次五间隔的插入排序，然后进行三间隔的插入排序，最后进行一间隔的插入排序
+
+![shell1](https://github.com/OwenLittleWhite/fword-data-structures/blob/master/asserts/shell1.png)
+
+* 定义增量序列 DM > DM-1 > … > D1 = 1
+* 对每个 Dk 进行“Dk-间隔”排序( k = M, M-1, … 1 )
+* 注意：“Dk-间隔”有序的序列，在执行“Dk-1-间隔”排序后，仍然是“Dk-间隔”有序的
+
+### 希尔增量序列
+
+这个增量序列是可以定义的，不同的增量序列会有不同的时间复杂度
+
+下面举三个增量序列
+
+#### 原始希尔增量序列
+
+DM = Math.floor(N / 2), Dk = Math.floor(D(k+1) / 2)
+
+``` JS
+function shellSort(arr) {
+    let len = arr.length;
+    if (len <= 0) {
+        return
+    }
+    let d;
+    for (d = Math.floor(len / 2); d > 0; d = Math.floor(d /= 2)) {
+        for (let i = d; i < len; i++) {
+            let temp = arr[i]; /* 摸下一张牌 */
+            let j;
+            for (j = i; j >= d && arr[j - d] > temp; j -= d) {
+                arr[j] = arr[j - d] // 移出空位 
+            }
+            arr[j] = temp
+        }
+    }
+}
+```
+
+这种是有问题的，例如序列：  1 9 2 10 3 11 4 12 5 13 6 14 7 15 8 16
+
+![shell2](https://github.com/OwenLittleWhite/fword-data-structures/blob/master/asserts/shell2.png)
+
+增量元素不互质，则小增量可能根本不
+起作用。
+
+希尔排序的实现很简单，但是时间复杂度分析很复杂
+
+#### Hibbard 增量序列
+
+Dk = 2^k – 1 — 相邻元素互质
+
+猜想：Tavg = O ( N^(5/4) )
+
+``` JS
+function hibbardShellSort(arr) {
+    let len = arr.length;
+    if (len <= 0) {
+        return
+    }
+    let d;
+    // 算出增量序列最大的K
+    let maxK = Math.floor(Math.log2((len + 1)));
+    let k;
+    for (k = maxK; k > 0; k--) {
+        d = 2 ** k - 1;
+        for (let i = d; i < len; i++) {
+            let temp = arr[i]; /* 摸下一张牌 */
+            let j;
+            for (j = i; j >= d && arr[j - d] > temp; j -= d) {
+                arr[j] = arr[j - d] // 移出空位 
+            }
+            arr[j] = temp
+        }
+    }
+}
+```
+
+### Sedgewick增量序列
+
+{1, 5, 19, 41, 109, … } 
+ 
+9*4^i – 9*2^i + 1 或 4^i – 3*2^i + 1
+
+猜想：Tavg = O ( N^(7/6) )，Tworst = O ( N^(4/3) )
+
+---
+
+希尔排序是不稳定的算法
+
