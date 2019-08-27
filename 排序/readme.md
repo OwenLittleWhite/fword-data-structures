@@ -329,3 +329,95 @@ function percDown(arr, p, len) {
 虽然堆排序给出最佳平均时间复
 杂度，但实际效果不如用
 Sedgewick增量序列的希尔排序。
+
+## 归并排序
+
+归并排序的核心在于两个有序子列的合并
+
+![merge](https://github.com/OwenLittleWhite/fword-data-structures/blob/master/asserts/merge.png)
+
+如果两个子列一共有N个元素，则归并的时间复杂度是？
+T ( N ) = O( N )
+
+有序子列的归并算法：
+
+``` JS
+/**
+ * 有序子列的归并
+ * @param {Array<Number>} arr 待合并的数组
+ * @param {Array<Number>} tempArr 临时的数组，合并的结果存放在这里，然后再导回给原数组
+ * @param {Number} lIndex 左边序列的起始下标
+ * @param {Number} rIndex 右边序列的起始下标
+ * @param {Number} rightEnd 右边序列的终止下标
+ */
+function merge(arr, tempArr, lIndex, rIndex, rightEnd) {
+    let leftEnd = rIndex - 1; // 左右两边挨着，所以左边序列的终止位置在右边起始位置的前一个
+    let tempIndex = lIndex; // 临时数组的起始下标
+    let numCnt = rightEnd - lIndex + 1; // 元素的总个数，元素从临时数组导回去的时候使用
+    // 将左右两个序列合并
+    while (lIndex <= leftEnd && rIndex <= rightEnd) {
+        if (arr[lIndex] <= arr[rIndex]) {
+            tempArr[tempIndex++] = arr[lIndex++];
+        } else {
+            tempArr[tempIndex++] = arr[rIndex++];
+        }
+    }
+    // 左右两边有剩下的则直接复制进临时数组中去
+    while (lIndex <= leftEnd) {
+        tempArr[tempIndex++] = arr[lIndex++];
+    }
+    while (rIndex <= rightEnd) {
+        tempArr[tempIndex++] = arr[rIndex++];
+    }
+    // 将元素由临时数组复制回去到原数组中去
+    for (let i = 0; i < numCnt; i++) {
+        arr[rightEnd] = tempArr[rightEnd];
+        rightEnd--
+    }
+
+}
+```
+
+然后再递归的去排序，采用分而治之的思想
+
+![merge2](https://github.com/OwenLittleWhite/fword-data-structures/blob/master/asserts/merge2.png)
+
+``` JS
+function mSort(arr, tempArr, lIndex, rightEnd) {
+    let center;
+    if (lIndex < rightEnd) {
+        center = Math.floor((lIndex + rightEnd) / 2)
+        // 对左边排序
+        mSort(arr, tempArr, lIndex, center);
+        // 对右边排序
+        mSort(arr, tempArr, center + 1, rightEnd);
+        // 合并结果
+        merge(arr, tempArr, lIndex, center + 1, rightEnd)
+    }
+}
+```
+
+和其他的排序方法统一传参
+
+``` JS
+/**
+ * 归并排序
+ * @param {Array<Number>} arr 
+ */
+function mergeSort(arr) {
+    let len = arr.length;
+    let tempArr = new Array(len);
+    mSort(arr, tempArr, 0, len - 1)
+}
+```
+
+这就是最终的递归算法下的归并排序
+
+其复杂度为：
+
+T( N ) = T( N/2 ) + T( N/2 ) + O( N )   T( N ) = O( N logN )
+
+此排序还是**稳定**的排序
+
+不过额外的空间复杂度为：O( N )
+

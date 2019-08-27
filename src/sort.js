@@ -172,23 +172,78 @@ function percDown(arr, p, len) {
     }
     arr[parent] = x;
 }
+
+/**
+ * 有序子列的归并
+ * @param {Array<Number>} arr 待合并的数组
+ * @param {Array<Number>} tempArr 临时的数组，合并的结果存放在这里，然后再导回给原数组
+ * @param {Number} lIndex 左边序列的起始下标
+ * @param {Number} rIndex 右边序列的起始下标
+ * @param {Number} rightEnd 右边序列的终止下标
+ */
+function merge(arr, tempArr, lIndex, rIndex, rightEnd) {
+    let leftEnd = rIndex - 1; // 左右两边挨着，所以左边序列的终止位置在右边起始位置的前一个
+    let tempIndex = lIndex; // 临时数组的起始下标
+    let numCnt = rightEnd - lIndex + 1; // 元素的总个数，元素从临时数组导回去的时候使用
+    // 将左右两个序列合并
+    while (lIndex <= leftEnd && rIndex <= rightEnd) {
+        if (arr[lIndex] <= arr[rIndex]) {
+            tempArr[tempIndex++] = arr[lIndex++];
+        } else {
+            tempArr[tempIndex++] = arr[rIndex++];
+        }
+    }
+    // 左右两边有剩下的则直接复制进临时数组中去
+    while (lIndex <= leftEnd) {
+        tempArr[tempIndex++] = arr[lIndex++];
+    }
+    while (rIndex <= rightEnd) {
+        tempArr[tempIndex++] = arr[rIndex++];
+    }
+    // 将元素由临时数组复制回去到原数组中去
+    for (let i = 0; i < numCnt; i++) {
+        arr[rightEnd] = tempArr[rightEnd];
+        rightEnd--
+    }
+
+}
+function mSort(arr, tempArr, lIndex, rightEnd) {
+    let center;
+    if (lIndex < rightEnd) {
+        center = Math.floor((lIndex + rightEnd) / 2)
+        mSort(arr, tempArr, lIndex, center);
+        mSort(arr, tempArr, center + 1, rightEnd);
+        merge(arr, tempArr, lIndex, center + 1, rightEnd)
+    }
+}
+/**
+ * 归并排序
+ * @param {Array<Number>} arr 
+ */
+function mergeSort(arr) {
+    let len = arr.length;
+    let tempArr = new Array(len);
+    mSort(arr, tempArr, 0, len - 1)
+}
+
 let testArr = [];
 
 for (let i = 0; i < 10000000; i++) {
     testArr.push(Math.random());
 }
-let arr1 = Array.from(testArr);
-let arr2 = Array.from(testArr);
+// let arr1 = Array.from(testArr);
+// let arr2 = Array.from(testArr);
 let arr3 = Array.from(testArr);
 let arr4 = Array.from(testArr);
 let arr5 = Array.from(testArr);
 let arr6 = Array.from(testArr);
-console.time('冒泡排序');
-bubbleSort(arr1);
-console.timeEnd('冒泡排序');
-console.time('插入排序')
-insertSort(arr2);
-console.timeEnd('插入排序');
+let arr7 = Array.from(testArr);
+// console.time('冒泡排序');
+// bubbleSort(arr1);
+// console.timeEnd('冒泡排序');
+// console.time('插入排序')
+// insertSort(arr2);
+// console.timeEnd('插入排序');
 console.time('希尔排序')
 shellSort(arr3);
 console.timeEnd('希尔排序');
@@ -201,8 +256,14 @@ console.timeEnd('sedgewick希尔排序');
 console.time('堆排序')
 heapSort(arr6);
 console.timeEnd('堆排序');
-for (let j = 0; j < arr1.length; j++) {
-    if (arr1[j] !== arr2[j] || arr2[j] !== arr3[j] || arr1[j] !== arr4[j] || arr1[j] !== arr5[j] || arr1[j] !== arr6[j]) {
-        throw new Error()
-    }
-}
+console.time('递归归并排序');
+mergeSort(arr7);
+console.timeEnd('递归归并排序');
+// for (let j = 0; j < arr1.length; j++) {
+//     if (arr1[j] !== arr2[j] || arr2[j] !== arr3[j]
+//         || arr1[j] !== arr4[j] || arr1[j] !== arr5[j]
+//         || arr1[j] !== arr6[j]
+//         || arr1[j] !== arr7[j]) {
+//         throw new Error()
+//     }
+// }
