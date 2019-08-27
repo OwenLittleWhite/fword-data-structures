@@ -12,6 +12,7 @@
 * [希尔排序](#希尔排序)
 * [堆排序](#堆排序)
 * [归并排序](#归并排序)
+* [快速排序](#快速排序)
 
 ## 简单排序
 
@@ -459,4 +460,78 @@ function mergeSort2(arr) {
 ```
 
 性质：**稳定**
+
+## 快速排序
+
+快速排序是从序列中选出一个数，然后将所有大于这个数的划分到右边，小于这个数的划分到左边，然后再对右边和左边递归地进行快速排序。
+
+什么是快速排序算法的最好情况？每次正好中分 T(N) = O( NlogN )
+
+选出来的数称作主元，接下来的操作称作子集划分。
+
+快速排序快的原因在于每次排序主元都是放在了最终正确的位置上
+
+### 选主元
+
+有三种方式选主元
+
+1. 取第一个数
+2. 随机取
+3. 取头、中、尾的中位数
+
+第一种方式取的话，对于一个已经有序的序列，复杂度T(N) = O(N^2)
+
+第二种方式的话，取随机数的代价不低
+
+第三种方式：
+
+``` JS
+/**
+ * 取中位数
+ * @param {Array<Number>} arr 
+ * @param {Number} left 最左边的下标
+ * @param {Number} right 最右边的下标
+ */
+function median3(arr, left, right) {
+    let center = Math.floor((left + right) / 2);
+    if (arr[left] > arr[center]) {
+        // 如果左边的大于中间的，则交换位置
+        let temp = arr[left];
+        arr[left] = arr[center];
+        arr[center] = temp;
+    }
+    if (arr[left] > arr[right]) {
+        let temp = arr[left];
+        arr[left] = arr[right];
+        arr[right] = temp;
+    }
+    // 程序运行至此，左边的为最小的
+    // 将最大放到右边
+    if (arr[center] > arr[right]) {
+        let temp = arr[center];
+        arr[center] = arr[right];
+        arr[right] = temp;
+    }
+    // 将主元放到右边
+    let temp = arr[right - 1];
+    arr[right - 1] = arr[center];
+    arr[center] = temp;
+    /* 子集划分时只需要考虑 arr[left+1] … arr[right–2] */
+    return arr[right - 1]; // 返回主元
+}
+```
+
+### 子集划分
+
+![quick](https://github.com/OwenLittleWhite/fword-data-structures/blob/master/asserts/quick.png)
+
+j从arr[left+1]开始和主元比较，小于主元的话，j向右移动，大于等于主元的话停下来，i再从arr[right-2]开始和主元比较，大于主元，i向左移动，小于主元则停下来和左边的交换，然后再从左边j开始比较，当j小于等于i的时候结束。
+
+### 小规模数据的处理
+
+设置一个阈值，当数据量充分小时不再递归快速排序而是采用插入排序。
+
+JS 代码实现
+
+```
 

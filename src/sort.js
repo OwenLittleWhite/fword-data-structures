@@ -27,8 +27,8 @@ function bubbleSort(arr) {
  * 插入排序
  * @param {Array<Number>} arr 
  */
-function insertSort(arr) {
-    let len = arr.length;
+function insertSort(arr, len) {
+    len = len || arr.length;
     if (len <= 0) {
         return
     }
@@ -252,6 +252,90 @@ function mergeSort2(arr) {
         length *= 2;
     }
 }
+
+/**
+ * 取中位数
+ * @param {Array<Number>} arr 
+ * @param {Number} left 最左边的下标
+ * @param {Number} right 最右边的下标
+ */
+function median3(arr, left, right) {
+    let center = Math.floor((left + right) / 2);
+    if (arr[left] > arr[center]) {
+        // 如果左边的大于中间的，则交换位置
+        let temp = arr[left];
+        arr[left] = arr[center];
+        arr[center] = temp;
+    }
+    if (arr[left] > arr[right]) {
+        let temp = arr[left];
+        arr[left] = arr[right];
+        arr[right] = temp;
+    }
+    // 程序运行至此，左边的为最小的
+    // 将最大放到右边
+    if (arr[center] > arr[right]) {
+        let temp = arr[center];
+        arr[center] = arr[right];
+        arr[right] = temp;
+    }
+    // 将主元放到右边
+    let temp = arr[right - 1];
+    arr[right - 1] = arr[center];
+    arr[center] = temp;
+    /* 子集划分时只需要考虑 arr[left+1] … arr[right–2] */
+    return arr[right - 1]; // 返回主元
+}
+
+/**
+ * 快速排序
+ * @param {Array<Number>} arr 
+ * @param {Number} left
+ * @param {Number} right 
+ */
+function _quickSort(arr, left, right) {
+    if (500 <= right - left) {
+        let pivot = median3(arr, left, right);
+        let i = left;
+        let j = right - 1;
+        for (; ;) {
+            // 左边从left+1开始的，比pivot小则i向右移动
+            while (arr[++i] < pivot) { }
+            // 右边从right-2开始，比pivot大则i向左移动
+            while (arr[--j] > pivot) { }
+            if (i < j) {
+                let temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp
+            } else {
+                break;
+            }
+        }
+        // 将主元放到最终的位置
+        let temp = arr[i];
+        arr[i] = arr[right - 1];
+        arr[right - 1] = temp;
+        // 分而治之
+        _quickSort(arr, left, i - 1);
+        _quickSort(arr, i + 1, right);
+
+    } else {
+        let tempArr = arr.slice(left, right + 1);
+        insertSort(tempArr)
+        for (let i = 0; i < tempArr.length; i++) {
+            arr[left + i] = tempArr[i]
+        }
+    }
+}
+/**
+ * 快速排序
+ * @param {Array<Number>} arr 
+ */
+function quickSort(arr) {
+    let len = arr.length
+    _quickSort(arr, 0, len - 1)
+}
+
 let testArr = [];
 
 for (let i = 0; i < 10000000; i++) {
@@ -265,6 +349,7 @@ let arr5 = Array.from(testArr);
 let arr6 = Array.from(testArr);
 let arr7 = Array.from(testArr);
 let arr8 = Array.from(testArr);
+let arr9 = Array.from(testArr);
 // console.time('冒泡排序');
 // bubbleSort(arr1);
 // console.timeEnd('冒泡排序');
@@ -289,12 +374,19 @@ console.timeEnd('递归归并排序');
 console.time('非递归归并排序');
 mergeSort2(arr8);
 console.timeEnd('非递归归并排序');
+console.time('快速排序');
+quickSort(arr9);
+console.timeEnd('快速排序');
 // for (let j = 0; j < arr1.length; j++) {
 //     if (arr1[j] !== arr2[j] || arr2[j] !== arr3[j]
 //         || arr1[j] !== arr4[j] || arr1[j] !== arr5[j]
 //         || arr1[j] !== arr6[j]
 //         || arr1[j] !== arr7[j]
-//         || arr1[j] !== arr8[j]) {
+//         || arr1[j] !== arr8[j]
+//         || arr1[j] !== arr9[j]) {
+//         console.log(testArr)
+//         console.log(arr1)
+//         console.log(arr9)
 //         throw new Error()
 //     }
 // }
