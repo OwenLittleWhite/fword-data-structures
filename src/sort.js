@@ -226,6 +226,32 @@ function mergeSort(arr) {
     mSort(arr, tempArr, 0, len - 1)
 }
 
+function mergePass(arr, tempArr, len, length) {
+    let i, j;
+
+    for (i = 0; i <= len - 2 * length; i += 2 * length)
+        merge(arr, tempArr, i, i + length, i + 2 * length - 1);
+    if (i + length < len) /* 归并最后2个子列*/
+        merge(arr, tempArr, i, i + length, len - 1);
+    else /* 最后只剩1个子列*/
+        for (j = i; j < len; j++) tempArr[j] = arr[j];
+}
+/**
+ * 非递归的归并排序
+ * @param {Array<Number>} arr 
+ */
+function mergeSort2(arr) {
+    let len = arr.length;
+    let length;
+    length = 1; /* 初始化子序列长度*/
+    let tempArr = new Array(len);
+    while (length < len) {
+        mergePass(arr, tempArr, len, length);
+        length *= 2;
+        mergePass(tempArr, arr, len, length);
+        length *= 2;
+    }
+}
 let testArr = [];
 
 for (let i = 0; i < 10000000; i++) {
@@ -238,6 +264,7 @@ let arr4 = Array.from(testArr);
 let arr5 = Array.from(testArr);
 let arr6 = Array.from(testArr);
 let arr7 = Array.from(testArr);
+let arr8 = Array.from(testArr);
 // console.time('冒泡排序');
 // bubbleSort(arr1);
 // console.timeEnd('冒泡排序');
@@ -259,11 +286,15 @@ console.timeEnd('堆排序');
 console.time('递归归并排序');
 mergeSort(arr7);
 console.timeEnd('递归归并排序');
+console.time('非递归归并排序');
+mergeSort2(arr8);
+console.timeEnd('非递归归并排序');
 // for (let j = 0; j < arr1.length; j++) {
 //     if (arr1[j] !== arr2[j] || arr2[j] !== arr3[j]
 //         || arr1[j] !== arr4[j] || arr1[j] !== arr5[j]
 //         || arr1[j] !== arr6[j]
-//         || arr1[j] !== arr7[j]) {
+//         || arr1[j] !== arr7[j]
+//         || arr1[j] !== arr8[j]) {
 //         throw new Error()
 //     }
 // }

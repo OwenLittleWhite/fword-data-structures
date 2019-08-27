@@ -7,8 +7,11 @@
 没有一种排序是任何情况下都表现最好的
 
 * [简单排序](#简单排序)
+    - [冒泡排序](#冒泡排序)
+    - [插入排序](#插入排序)
 * [希尔排序](#希尔排序)
 * [堆排序](#堆排序)
+* [归并排序](#归并排序)
 
 ## 简单排序
 
@@ -378,6 +381,8 @@ function merge(arr, tempArr, lIndex, rIndex, rightEnd) {
 }
 ```
 
+### 递归归并排序
+
 然后再递归的去排序，采用分而治之的思想
 
 ![merge2](https://github.com/OwenLittleWhite/fword-data-structures/blob/master/asserts/merge2.png)
@@ -420,4 +425,38 @@ T( N ) = T( N/2 ) + T( N/2 ) + O( N )   T( N ) = O( N logN )
 此排序还是**稳定**的排序
 
 不过额外的空间复杂度为：O( N )
+
+### 非递归归并排序
+
+![merge3](https://github.com/OwenLittleWhite/fword-data-structures/blob/master/asserts/merge3.png)
+
+``` JS
+function mergePass(arr, tempArr, len, length) {
+    let i, j;
+    for (i = 0; i <= len - 2 * length; i += 2 * length)
+        merge(arr, tempArr, i, i + length, i + 2 * length - 1);
+    if (i + length < len) /* 归并最后2个子列*/
+        merge(arr, tempArr, i, i + length, len - 1);
+    else /* 最后只剩1个子列*/
+        for (j = i; j < len; j++) tempArr[j] = arr[j];
+}
+/**
+ * 非递归的归并排序
+ * @param {Array<Number>} arr 
+ */
+function mergeSort2(arr) {
+    let len = arr.length;
+    let length;
+    length = 1; /* 初始化子序列长度*/
+    let tempArr = new Array(len);
+    while (length < len) {
+        mergePass(arr, tempArr, len, length);
+        length *= 2;
+        mergePass(tempArr, arr, len, length);
+        length *= 2;
+    }
+}
+```
+
+性质：**稳定**
 
