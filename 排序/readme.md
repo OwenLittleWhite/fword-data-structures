@@ -533,5 +533,55 @@ j从arr[left+1]开始和主元比较，小于主元的话，j向右移动，大�
 
 JS 代码实现
 
+```JS
+/**
+ * 快速排序
+ * @param {Array<Number>} arr 
+ * @param {Number} left
+ * @param {Number} right 
+ */
+function _quickSort(arr, left, right) {
+    if (500 <= right - left) {
+        let pivot = median3(arr, left, right);
+        let i = left;
+        let j = right - 1;
+        for (; ;) {
+            // 左边从left+1开始的，比pivot小则i向右移动
+            while (arr[++i] < pivot) { }
+            // 右边从right-2开始，比pivot大则i向左移动
+            while (arr[--j] > pivot) { }
+            if (i < j) {
+                let temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp
+            } else {
+                break;
+            }
+        }
+        // 将主元放到最终的位置
+        let temp = arr[i];
+        arr[i] = arr[right - 1];
+        arr[right - 1] = temp;
+        // 分而治之
+        _quickSort(arr, left, i - 1);
+        _quickSort(arr, i + 1, right);
+
+    } else {
+        // 小于一定规模则插入排序
+        let tempArr = arr.slice(left, right + 1);
+        insertSort(tempArr)
+        for (let i = 0; i < tempArr.length; i++) {
+            arr[left + i] = tempArr[i]
+        }
+    }
+}
+/**
+ * 快速排序
+ * @param {Array<Number>} arr 
+ */
+function quickSort(arr) {
+    let len = arr.length
+    _quickSort(arr, 0, len - 1)
+}
 ```
 

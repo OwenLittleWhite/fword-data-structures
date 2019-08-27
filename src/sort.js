@@ -27,8 +27,8 @@ function bubbleSort(arr) {
  * 插入排序
  * @param {Array<Number>} arr 
  */
-function insertSort(arr, len) {
-    len = len || arr.length;
+function insertSort(arr) {
+    let len = arr.length;
     if (len <= 0) {
         return
     }
@@ -341,6 +341,7 @@ let testArr = [];
 for (let i = 0; i < 10000000; i++) {
     testArr.push(Math.random());
 }
+
 // let arr1 = Array.from(testArr);
 // let arr2 = Array.from(testArr);
 let arr3 = Array.from(testArr);
@@ -390,3 +391,9 @@ console.timeEnd('快速排序');
 //         throw new Error()
 //     }
 // }
+
+for (let j = 0; j < arr8.length; j++) {
+    if (arr8[j] !== arr9[j]) {
+        throw new Error()
+    }
+}
