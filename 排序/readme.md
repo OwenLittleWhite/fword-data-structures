@@ -13,6 +13,7 @@
 * [堆排序](#堆排序)
 * [归并排序](#归并排序)
 * [快速排序](#快速排序)
+* [表排序](#表排序)
 
 ## 简单排序
 
@@ -533,7 +534,7 @@ j从arr[left+1]开始和主元比较，小于主元的话，j向右移动，大�
 
 JS 代码实现
 
-```JS
+``` JS
 /**
  * 快速排序
  * @param {Array<Number>} arr 
@@ -545,11 +546,11 @@ function _quickSort(arr, left, right) {
         let pivot = median3(arr, left, right);
         let i = left;
         let j = right - 1;
-        for (; ;) {
+        for (;;) {
             // 左边从left+1开始的，比pivot小则i向右移动
-            while (arr[++i] < pivot) { }
+            while (arr[++i] < pivot) {}
             // 右边从right-2开始，比pivot大则i向左移动
-            while (arr[--j] > pivot) { }
+            while (arr[--j] > pivot) {}
             if (i < j) {
                 let temp = arr[i];
                 arr[i] = arr[j];
@@ -584,4 +585,50 @@ function quickSort(arr) {
     _quickSort(arr, 0, len - 1)
 }
 ```
+
+## 表排序
+
+当待排的数据移动的成本很高时，比如说一部电影、一本字典，就需要表排序了。
+
+表排序就是定义一个待排序列的指针数组（表）。
+
+将排好序的指针存入table里面
+
+如下图，按照key的英文字母顺序对这几本书进行排序
+
+![table](https://github.com/OwenLittleWhite/fword-data-structures/blob/master/asserts/table.png)
+
+如果只是按照顺序输出的话，直接输出
+
+A[ table[0] ], A[ table[1] ], ……, A[ table[N-1] ]
+
+如果物理位置要排序的话
+
+N个数字的排列由若干个独立的环组成
+
+![table2](https://github.com/OwenLittleWhite/fword-data-structures/blob/master/asserts/table2.png)
+
+如图所示，红色的为一个环，绿色的为一个环，蓝色的为一个环
+
+以红色环举例：
+
+A[0]的位置本来要放A[3], 而A[3]的位置是要放A[1]，A[1]的位置要放A[5], A[5]的位置放A[0], 所以形成了一个环
+
+移动时，将A[0]位置的f元素放到临时的地方
+
+temp = f
+
+将table[0]即A[3]元素放到A[0], 依次类推当 if ( table[i] == i ) 环结束
+
+### 复杂度分析
+
+最好情况：初始即有序
+
+最坏情况：
+
+有 N / 2 个环，每个环包含2个元素
+
+需要 3N / 2 次元素移动
+
+T = O( m N ) ，m 是每个A元素的复制时间。
 
