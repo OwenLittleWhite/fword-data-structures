@@ -8,3 +8,4 @@
 2. [树](https://github.com/OwenLittleWhite/fword-data-structures/tree/master/%E6%A0%91)
 3. [图](https://github.com/OwenLittleWhite/fword-data-structures/tree/master/%E5%9B%BE)
 4. [排序](https://github.com/OwenLittleWhite/fword-data-structures/tree/master/排序)
+5. [散列查找](https://github.com/OwenLittleWhite/fword-data-structures/tree/master/散列查找)
